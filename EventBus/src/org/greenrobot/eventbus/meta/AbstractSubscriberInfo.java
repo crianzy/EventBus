@@ -21,8 +21,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Method;
 
-/** Base class for generated subscriber meta info classes created by annotation processing. */
+/** Base class for generated subscriber meta info classes created by annotation processing.
+ * 订阅者信息的base类
+ *
+ * */
 public abstract class AbstractSubscriberInfo implements SubscriberInfo {
+    // 订阅者的类
     private final Class subscriberClass;
     private final Class<? extends SubscriberInfo> superSubscriberInfoClass;
     private final boolean shouldCheckSuperclass;
@@ -64,6 +68,15 @@ public abstract class AbstractSubscriberInfo implements SubscriberInfo {
         return createSubscriberMethod(methodName, eventType, threadMode, 0, false);
     }
 
+    /**
+     * 创建 订阅者 方法类
+     * @param methodName 方法名
+     * @param eventType 事件类型
+     * @param threadMode 线程模式
+     * @param priority 权重
+     * @param sticky 是否是粘性
+     * @return
+     */
     protected SubscriberMethod createSubscriberMethod(String methodName, Class<?> eventType, ThreadMode threadMode,
                                                       int priority, boolean sticky) {
         try {

@@ -31,6 +31,9 @@ import org.greenrobot.eventbusperf.Test;
 import org.greenrobot.eventbusperf.TestEvent;
 import org.greenrobot.eventbusperf.TestParams;
 
+/**
+ * EventBus 的事件发送类
+ */
 public abstract class PerfTestEventBus extends Test {
 
     private final EventBus eventBus;
@@ -41,17 +44,27 @@ public abstract class PerfTestEventBus extends Test {
 
     public PerfTestEventBus(Context context, TestParams params) {
         super(context, params);
-        eventBus = EventBus.builder().eventInheritance(params.isEventInheritance()).addIndex(new MyEventBusIndex())
-                .ignoreGeneratedIndex(params.isIgnoreGeneratedIndex()).build();
+        // 重新build 一个 EventBus
+        eventBus = EventBus.builder()
+                .eventInheritance(params.isEventInheritance())
+                .addIndex(new MyEventBusIndex())
+                .ignoreGeneratedIndex(params.isIgnoreGeneratedIndex())
+                .build();
+
+
+		// 订阅者
         subscribers = new ArrayList<Object>();
         eventCount = params.getEventCount();
+		// 实际上 上事件数量
         expectedEventCount = eventCount * params.getSubscriberCount();
+		// 获取相应的 订阅者的类
         subscriberClass = getSubscriberClassForThreadMode();
     }
 
     @Override
     public void prepareTest() {
         try {
+			//这里吧 订阅者 构建出来
             Constructor<?> constructor = subscriberClass.getConstructor(PerfTestEventBus.class);
             for (int i = 0; i < params.getSubscriberCount(); i++) {
                 Object subscriber = constructor.newInstance(this);
@@ -84,6 +97,9 @@ public abstract class PerfTestEventBus extends Test {
     }
 
 
+	/**
+	 * 这个是一个个的 psot
+	 */
     public static class Post extends PerfTestEventBus {
         public Post(Context context, TestParams params) {
             super(context, params);
@@ -99,6 +115,7 @@ public abstract class PerfTestEventBus extends Test {
             TestEvent event = new TestEvent();
             long timeStart = System.nanoTime();
             for (int i = 0; i < super.eventCount; i++) {
+				// 循环 一个个的发送事件
                 super.eventBus.post(event);
                 if (canceled) {
                     break;
@@ -129,6 +146,7 @@ public abstract class PerfTestEventBus extends Test {
         }
 
         public void runTest() {
+			// 让订阅者 先解除订阅 后又马上订阅
             super.registerUnregisterOneSubscribers();
             long timeNanos = super.registerSubscribers();
             primaryResultMicros = timeNanos / 1000;
@@ -141,6 +159,9 @@ public abstract class PerfTestEventBus extends Test {
         }
     }
 
+	/**
+	 * 一个一个的注册
+	 */
     public static class RegisterOneByOne extends PerfTestEventBus {
         protected Method clearCachesMethod;
 
@@ -285,6 +306,9 @@ public abstract class PerfTestEventBus extends Test {
         return time;
     }
 
+	/**
+	 * // 让订阅者 先注册 后有马上 解注册
+	 */
     private void registerUnregisterOneSubscribers() {
         if (!subscribers.isEmpty()) {
             Object subscriber = subscribers.get(0);

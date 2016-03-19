@@ -19,7 +19,11 @@ import android.util.Log;
 
 /**
  * Posts events in background.
- * 
+ *
+ * 如果 发送事件的  不是主线程 那么 就和 发送事件的线程一直
+ * 如果 发送事件的  是主线程 那么 会使用一个独立的线
+ *
+ * 执行的订阅方法不能耗时 , 不然会阻塞 其他事件的发送
  * @author Markus
  */
 final class BackgroundPoster implements Runnable {
@@ -27,6 +31,7 @@ final class BackgroundPoster implements Runnable {
     private final PendingPostQueue queue;
     private final EventBus eventBus;
 
+    // 线程是否在执行
     private volatile boolean executorRunning;
 
     BackgroundPoster(EventBus eventBus) {
@@ -39,6 +44,7 @@ final class BackgroundPoster implements Runnable {
         synchronized (this) {
             queue.enqueue(pendingPost);
             if (!executorRunning) {
+                // 如果不在执行的话
                 executorRunning = true;
                 eventBus.getExecutorService().execute(this);
             }
@@ -49,6 +55,7 @@ final class BackgroundPoster implements Runnable {
     public void run() {
         try {
             try {
+                // 这里循环 是为了保证 在一个线程中 就能发送挖 所有的事件
                 while (true) {
                     PendingPost pendingPost = queue.poll(1000);
                     if (pendingPost == null) {
@@ -61,6 +68,7 @@ final class BackgroundPoster implements Runnable {
                             }
                         }
                     }
+                    // 执行订阅方法
                     eventBus.invokeSubscriber(pendingPost);
                 }
             } catch (InterruptedException e) {

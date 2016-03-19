@@ -17,6 +17,11 @@ package org.greenrobot.eventbus.meta;
 
 /**
  * Interface for generated indexes.
+ *
+ * 订阅者信息索引接口
+ *
+ * 实现类 在编译的过程 会通过APT 生成
+ * 但是 默认的好像 没有
  */
 public interface SubscriberInfoIndex {
     SubscriberInfo getSubscriberInfo(Class<?> subscriberClass);

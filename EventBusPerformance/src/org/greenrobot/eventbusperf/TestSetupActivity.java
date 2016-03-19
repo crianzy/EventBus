@@ -73,23 +73,37 @@ public class TestSetupActivity extends Activity {
 
     public void startClick(View v) {
         TestParams params = new TestParams();
+
+        // 确定选择的线程 模式
         Spinner spinnerThread = (Spinner) findViewById(R.id.spinnerThread);
         String threadModeStr = spinnerThread.getSelectedItem().toString();
         ThreadMode threadMode = ThreadMode.valueOf(threadModeStr);
         params.setThreadMode(threadMode);
 
+        // 设置时间 继承?
         params.setEventInheritance(((CheckBox) findViewById(R.id.checkBoxEventBusEventHierarchy)).isChecked());
+        // 设置 是否 忽略 生成的索引
         params.setIgnoreGeneratedIndex(((CheckBox) findViewById(R.id.checkBoxEventBusIgnoreGeneratedIndex)).isChecked());
 
         EditText editTextEvent = (EditText) findViewById(R.id.editTextEvent);
+        // 设置 时间数量
         params.setEventCount(Integer.parseInt(editTextEvent.getText().toString()));
 
+        // 设置 接收者的数量
         EditText editTextSubscriber = (EditText) findViewById(R.id.editTextSubscribe);
         params.setSubscriberCount(Integer.parseInt(editTextSubscriber.getText().toString()));
 
+//        <string-array name="spinnerTestsToRun">
+//        <item>Post Events</item>
+//        <item>Register Subscribers</item>
+//        <item>Register Subscribers, no unregister</item>
+//        <item>Register Subscribers, 1. time</item>
+//        </string-array>
         Spinner spinnerTestToRun = (Spinner) findViewById(R.id.spinnerTestToRun);
         int testPos = spinnerTestToRun.getSelectedItemPosition();
+        // 获取选中位置
         params.setTestNumber(testPos + 1);
+        // 获取选中的 对应类 List  有两种 一种是 EVentBus  还有一种是 otto 的
         ArrayList<Class<? extends Test>> testClasses = initTestClasses(testPos);
         params.setTestClasses(testClasses);
 

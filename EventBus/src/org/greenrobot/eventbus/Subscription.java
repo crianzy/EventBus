@@ -15,6 +15,12 @@
  */
 package org.greenrobot.eventbus;
 
+/**
+ * 订阅者 信息
+ *
+ * 一个订阅者  对应的需要  一个 订阅方法  一个有该方法的对象
+ *
+ */
 final class Subscription {
     final Object subscriber;
     final SubscriberMethod subscriberMethod;

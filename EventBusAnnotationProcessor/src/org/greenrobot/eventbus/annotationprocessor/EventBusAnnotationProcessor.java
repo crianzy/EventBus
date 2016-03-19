@@ -46,6 +46,9 @@ import javax.tools.JavaFileObject;
 
 import de.greenrobot.common.ListMap;
 
+
+// 这个 是 apt 一个特性 这个类的方法会自动执行
+
 @SupportedAnnotationTypes("org.greenrobot.eventbus.Subscribe")
 @SupportedOptions(value = {"eventBusIndex", "verbose"})
 public class EventBusAnnotationProcessor extends AbstractProcessor {

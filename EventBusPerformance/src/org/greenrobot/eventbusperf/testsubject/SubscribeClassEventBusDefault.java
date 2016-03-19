@@ -27,6 +27,7 @@ public class SubscribeClassEventBusDefault {
         this.perfTestEventBus = perfTestEventBus;
     }
 
+    // 这里接收时间
     @Subscribe
     public void onEvent(TestEvent event) {
         perfTestEventBus.eventsReceivedCount.incrementAndGet();

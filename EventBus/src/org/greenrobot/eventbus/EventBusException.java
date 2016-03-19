@@ -17,7 +17,8 @@ package org.greenrobot.eventbus;
 
 /**
  * An {@link RuntimeException} thrown in cases something went wrong inside EventBus.
- * 
+ *
+ * 异常
  * @author Markus
  * 
  */

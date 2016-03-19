@@ -35,10 +35,12 @@ public class TestRunner extends Thread {
     public TestRunner(Context context, TestParams testParams, EventBus controlBus) {
         this.controlBus = controlBus;
         tests = new ArrayList<Test>();
+        // 测试类
         for (Class<? extends Test> testClazz : testParams.getTestClasses()) {
             try {
                 Constructor<?>[] constructors = testClazz.getConstructors();
                 Constructor<? extends Test> constructor = testClazz.getConstructor(Context.class, TestParams.class);
+                // 反射出相应的 测试类
                 Test test = constructor.newInstance(context, testParams);
                 tests.add(test);
             } catch (Exception e) {
@@ -52,6 +54,7 @@ public class TestRunner extends Thread {
         int idx = 0;
         for (Test test : tests) {
             // Clean up and let the main thread calm down
+            // 这里 GC 和 sleep 是为了 让主线程 冷静闲置下来
             System.gc();
             try {
                 Thread.sleep(300);
@@ -60,8 +63,10 @@ public class TestRunner extends Thread {
             } catch (InterruptedException e) {
             }
 
+            // 测试准备
             test.prepareTest();
             if (!canceled) {
+                // 测试 执行
                 test.runTest();
             }
             if (!canceled) {

@@ -17,7 +17,8 @@ package org.greenrobot.eventbus;
 
 /**
  * This Event is posted by EventBus when an exception occurs inside a subscriber's event handling method.
- * 
+ *
+ * 订阅异常
  * @author Markus
  */
 public final class SubscriberExceptionEvent {

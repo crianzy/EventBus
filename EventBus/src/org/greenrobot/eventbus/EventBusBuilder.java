@@ -35,8 +35,11 @@ public class EventBusBuilder {
     boolean sendNoSubscriberEvent = true;
     boolean throwSubscriberException;
     boolean eventInheritance = true;
+
+
     boolean ignoreGeneratedIndex;
     boolean strictMethodVerification;
+
     ExecutorService executorService = DEFAULT_EXECUTOR_SERVICE;
     List<Class<?>> skipMethodVerificationForClasses;
     List<SubscriberInfoIndex> subscriberInfoIndexes;
@@ -87,6 +90,10 @@ public class EventBusBuilder {
      * <p/>
      * However, keep in mind that event posting usually consumes just a small proportion of CPU time inside an app,
      * unless it is posting at high rates, e.g. hundreds/thousands of events per second.
+     *
+     * 设置是否考虑事件的继承  即父类 是否被通知到  默认是
+     *
+     * 如果设置成 false 那么父类将得不到事件  但是 事件 接收速度回忆 快 20%
      */
     public EventBusBuilder eventInheritance(boolean eventInheritance) {
         this.eventInheritance = eventInheritance;
@@ -116,7 +123,9 @@ public class EventBusBuilder {
         return this;
     }
 
-    /** Forces the use of reflection even if there's a generated index (default: false). */
+    /** Forces the use of reflection even if there's a generated index (default: false).
+     * TODO 亲自使用反射 即使只有一个 生成 的index  默认是false 不适用反射?
+     * */
     public EventBusBuilder ignoreGeneratedIndex(boolean ignoreGeneratedIndex) {
         this.ignoreGeneratedIndex = ignoreGeneratedIndex;
         return this;

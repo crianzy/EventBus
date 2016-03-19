@@ -33,6 +33,9 @@ import org.greenrobot.eventbusperf.Test;
 import org.greenrobot.eventbusperf.TestEvent;
 import org.greenrobot.eventbusperf.TestParams;
 
+/**
+ * otto 的事件 发送类
+ */
 public abstract class PerfTestOtto extends Test {
 
     private final Bus eventBus;

@@ -43,6 +43,7 @@ public class TestRunnerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runtests);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
+        // event bus 注册
         controlBus = new EventBus();
         controlBus.register(this);
     }
@@ -52,6 +53,7 @@ public class TestRunnerActivity extends Activity {
         super.onResume();
         if (testRunner == null) {
             TestParams testParams = (TestParams) getIntent().getSerializableExtra("params");
+            // 创建 并执行  testRunner 线程
             testRunner = new TestRunner(getApplicationContext(), testParams, controlBus);
 
             if (testParams.getTestNumber() == 1) {

@@ -19,6 +19,13 @@ import org.greenrobot.eventbus.SubscriberMethod;
 
 /**
  * Uses {@link SubscriberMethodInfo} objects to create {@link org.greenrobot.eventbus.SubscriberMethod} objects on demand.
+ *
+ * 订阅者的基本信息
+ * 主要包含方法信息
+ *
+ * 这个对象 是在 apt 的时候回用到
+ *
+ * EventBus 中会自己反射生成
  */
 public class SimpleSubscriberInfo extends AbstractSubscriberInfo {
 

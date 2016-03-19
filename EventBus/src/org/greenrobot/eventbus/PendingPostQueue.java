@@ -16,8 +16,13 @@
 
 package org.greenrobot.eventbus;
 
+/**
+ * 待发送队列
+ */
 final class PendingPostQueue {
+    // 队列头部
     private PendingPost head;
+    // 队列尾部
     private PendingPost tail;
 
     synchronized void enqueue(PendingPost pendingPost) {
@@ -35,6 +40,7 @@ final class PendingPostQueue {
         notifyAll();
     }
 
+    // 获取头部
     synchronized PendingPost poll() {
         PendingPost pendingPost = head;
         if (head != null) {
@@ -46,6 +52,7 @@ final class PendingPostQueue {
         return pendingPost;
     }
 
+    // 获取头部, 如果没有 则 等一会 有新的事件进来 则会继续执行  入队的哪里 调用了  notifyAll();
     synchronized PendingPost poll(int maxMillisToWait) throws InterruptedException {
         if (head == null) {
             wait(maxMillisToWait);
